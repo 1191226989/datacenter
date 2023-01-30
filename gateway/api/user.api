@@ -1,0 +1,40 @@
+syntax = "v1"
+
+// 用户登录
+type LoginRequest {
+    Username string `json:"username"`
+    Password string `json:"password"`
+}
+
+type LoginResult {
+    Id           int64  `json:"id"`
+    Username     string `json:"username"`
+    AccessToken  string `json:"access_token"`
+    AccessExpire int64  `json:"access_expire"`
+    RefreshAfter int64  `json:"refresh_after"`
+}
+
+// 用户注册
+type SignupRequest {
+    Username string `json:"username"`
+    Password string `json:"password"`
+}
+
+type SignupResult {
+    Id           int64  `json:"id"`
+    Username     string `json:"username"`
+    AccessToken  string `json:"access_token"`
+    AccessExpire int64  `json:"access_expire"`
+    RefreshAfter int64  `json:"refresh_after"`
+}
+
+@server(
+	group: user
+)
+service gateway-api {
+    @handler LoginHandler
+    post /user/login (LoginRequest) returns (Response)
+
+    @handler SignupHandler
+    post /user/signup (SignupRequest) returns (Response)
+}

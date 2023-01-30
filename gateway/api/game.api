@@ -1,0 +1,86 @@
+syntax = "v1"
+
+info (
+	title: "游戏服务api定义"
+	desc: "游戏服务api定义"
+	author: "datacenter"
+	email: "datacenter@gmail.com"
+)
+
+type Game {
+	GameId          int64  `json:"game_id"`
+    PlatformId      int64  `json:"platform_id"`     // 游戏平台id
+	Title           string `json:"title"`           // 游戏名称
+	LinkUrl         string `json:"login_url"`       // 游戏连接地址
+}
+
+// 获取游戏数据信息
+type GameInfoRequest {
+    GameId  int64  `path:"gameId"`
+}
+
+type GameInfoResponse {
+	Code 	int64 	`json:"code"`
+	Message string 	`json:"message"`
+	Data    Game    `json:"data"`
+}
+
+// 获取游戏列表数据
+type GameListRequest {
+	PlatformId      int64  `json:"platform_id"`     // 游戏平台id
+}
+
+type GameListResponse {
+	Code 	int64 	`json:"code"`
+	Message string 	`json:"message"`
+	Data    []Game  `json:"data"`
+}
+
+@server(
+	group: game
+)
+service gateway-api {
+    @doc(
+		summary: "游戏id获取游戏的数据"
+	)
+	@handler GameInfo
+	get /game/info/:gameId (GameInfoRequest) returns(GameInfoResponse)
+
+    @doc(
+		summary: "获取游戏列表数据"
+	)
+	@handler GameList
+	get /game/list/:platformId (GameListRequest) returns(GameListResponse)
+}
+
+// 游戏抽奖
+type GameDrawRequest {
+	UserId     int64 	`json:"user_id"`    // 用户id
+	GameId     int64 	`json:"game_id"`    // 游戏id
+}
+
+type GameDrawResponse {
+	Code 	int64 		`json:"code"`
+	Message string 		`json:"message"`
+	Data    []Award  	`json:"data"`
+}
+
+type Award {
+	Id          	int64  	`json:"award_id"` 		// 奖品id
+    AwardName      	string  `json:"award_name"`     // 奖品名称
+    AwardImage      string  `json:"award_image"`    // 奖品图片
+    AwardPrice      string  `json:"award_price"`    // 奖品价格
+	GameId          int64 	`json:"game_id"`        // 游戏id
+}
+
+@server(
+	group: game
+	jwt: Auth
+)
+service gateway-api {
+	@doc(
+		summary: "游戏抽奖"
+	)
+	@handler GameDraw
+	post /game/draw (GameDrawRequest) returns(GameDrawResponse)
+}

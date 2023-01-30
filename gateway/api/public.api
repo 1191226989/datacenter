@@ -1,0 +1,29 @@
+syntax = "v1"
+
+info (
+	title: "公共服务api定义"
+	desc: "公共服务api定义"
+	author: "datacenter"
+	email: "datacenter@gmail.com"
+)
+
+// 测试访问
+type TestingRequest {
+}
+
+type TestingResponse {
+	Message string 	`json:"message"`
+}
+
+@server(
+	group: public
+    middleware: CheckPassMiddleware // 路由中间件
+)
+service gateway-api {
+    @doc(
+		summary: "测试访问"
+	)
+	@handler Testing
+	get /public/test (TestingRequest) returns(TestingResponse)
+
+}

@@ -1,15 +1,18 @@
-# Binaries for programs and plugins
-*.exe
-*.exe~
-*.dll
-*.so
-*.dylib
+# idea
+.idea
+.idea/
+*.iml
+.DS_Store
+**/.DS_Store
 
-# Test binary, built with `go test -c`
-*.test
+#deploy data
 
-# Output of the go coverage tool, specifically when used with LiteIDE
-*.out
+data/*
+!data/.gitkeep
 
-# Dependency directories (remove the comment below to include it)
-# vendor/
+# gitlab ci
+.cache
+
+#vscode
+.vscode
+.vscode/

@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package user;
+option go_package="./user";
+
+// 用户数据
+message UserIdRequest {
+  string id = 1;
+}
+
+message UserNameRequest {
+  string username = 1;
+}
+
+message UserInfoResponse {
+  int64 id = 1;
+  string username = 2;
+  string password = 3;
+  string mobile = 4;
+  string nickname = 5;
+}
+
+service User {
+  // 获取用户数据（用户id）
+  rpc GetUserInfoById(UserIdRequest) returns (UserInfoResponse);
+
+  // 获取用户数据（用户名）
+  rpc GetUserInfoByUsername(UserNameRequest) returns (UserInfoResponse);
+}
